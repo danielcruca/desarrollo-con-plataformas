@@ -107,3 +107,8 @@ git checkout -b copia-mi-codigo
 ## Realizar un pull request
 
 Después de hacer cambios en la nueva rama, realiza un pull request para fusionar los cambios en la rama principal (main).
+
+
+## Flujo
+
+![alt text](./imagenes/git.jpg "Diagrama")
