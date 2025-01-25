@@ -24,7 +24,8 @@ git config --global user.email "testpruebaprogra@gmail.com"
 ```
 
 ### Clonar el repositorio
-*Usualmente esto se hace una vez.*
+**Usualmente esto se hace una vez.**
+
 Navegar a la carpeta `htdocs` de XAMPP:
 
 ```bash
