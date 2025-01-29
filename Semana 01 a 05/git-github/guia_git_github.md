@@ -14,6 +14,14 @@
 
 ## Pasos para usar Git
 
+### Verificar instalación.
+
+Ejecutar git -v, si la salida del comando es un "not found" o no encontrado, significa que no esta instalado todavia. 
+```bash
+PS C:\Users\50688> git -v
+git version 2.47.1.windows.2
+```
+
 ### Configuración de usuario
 
 Abrir una terminal y ejecutar los siguientes comandos para configurar tu nombre y correo electrónico:
