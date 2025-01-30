@@ -43,7 +43,7 @@ cd C:\xampp\htdocs
 Clonar el repositorio que creaste en GitHub (se te pedirá que inicies sesión vía web):
 
 ```bash
-git clone https://github.com/testprogra3/test-progra3.git
+git clone https://github.com/SU-REPOSITORIO/test-progra3.git
 ```
 
 Luego, entrar al directorio del repositorio clonado:
