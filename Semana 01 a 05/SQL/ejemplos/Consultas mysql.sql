@@ -97,3 +97,34 @@ INSERT INTO transacciones_ventas (id_libro, fecha_venta, cantidad, total) VALUES
 
 -- Si todo es correcto, confirma la transacción
 COMMIT;
+
+
+
+-- # CRUD
+-- Insertar un nuevo libro
+START TRANSACTION;
+
+INSERT INTO libros (titulo, id_autor, precio, cantidad_stock) VALUES ('Nuevo Libro', 1, 10.99, 50);
+
+-- Actualizar el precio de un libro
+UPDATE libros SET precio = 12.99 WHERE titulo = 'Nuevo Libro';
+
+-- Eliminar un libro
+DELETE FROM libros WHERE titulo = 'Nuevo Libro';
+
+-- Confirmar la transacción
+COMMIT;
+
+-- Insertar un autor con valores predeterminados para nacionalidad (provocará error si nacionalidad no permite NULL)
+START TRANSACTION;
+
+INSERT INTO autores (nombre, apellido) VALUES ('Juan', 'Pérez');
+
+-- Provocando un error intencionalmente (asumiendo que la columna 'nacionalidad' es NOT NULL)
+INSERT INTO autores (nombre, apellido, nacionalidad) VALUES ('María', 'López', NULL);
+
+-- Confirmar la transacción si todo está bien
+COMMIT;
+
+-- Si ocurre un error, hacer rollback
+ROLLBACK;
