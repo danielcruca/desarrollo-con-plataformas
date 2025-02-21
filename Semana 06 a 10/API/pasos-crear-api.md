@@ -1,24 +1,15 @@
-# Paso para crear API.
+# Creación de una API en PHP
 
-- Crear estructura de folders.
- 1. crear un folder llamado  **libreria-api**(puede usar cualquier otro nombre) en C:\xampp\htdocs
-- Crear estructura de folders iniciales.
- 1. Dentro de libreria-api(o cualqueir nombre).
-   Crear dentro de libreria-api lo siguientes folders:
-    1. public
-    2. src
-- Dentro de **public** crear la siguiente estructura:
-    1. error (folder)
-        1. Dentro de *error* crear un archivo llamado *response.html*
-    3. index.php (archivo)
-- Dentro de **scr** crear la siguiente estructura de folders:
-    1. controllers (folder)
-    2. db (folder)
-    3. models (folder)
-    4. routes.php (archivo)
+Este documento explica los pasos necesarios para crear una estructura básica de una API en PHP.
 
-La estructura de archivos se deberia de ver algo asi:    
+---
 
+## 📂 Estructura de carpetas
+
+1. Crear un folder llamado **libreria-api** en `C:\xampp\htdocs` (puede usar cualquier otro nombre).
+2. Dentro de **libreria-api**, crear la siguiente estructura de folders:
+
+```
 C:.
 ├───public
 │   └───error
@@ -26,12 +17,25 @@ C:.
     ├───controllers
     ├───db
     └───models
+```
 
+3. Dentro de **public**, crear:
+   - Un folder llamado **error**, y dentro de este, un archivo llamado `response.html`.
+   - Un archivo llamado `index.php`.
 
-# Contenido de archivos.
+4. Dentro de **src**, crear:
+   - Un folder llamado **controllers**.
+   - Un folder llamado **db**.
+   - Un folder llamado **models**.
+   - Un archivo llamado `routes.php`.
 
-Agregar el siguiente codigo HTML dentro de public/error/response.html
+---
 
+## 📄 Contenido de los Archivos
+
+### 1️⃣ `public/error/response.html`
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,85 +66,54 @@ Agregar el siguiente codigo HTML dentro de public/error/response.html
     <div class="container">
         <h1>ERROR</h1>
         <p>Este endpoint no existe.</p>
-        <p>Revisa el URL he intente de nuevo.</p>
+        <p>Revisa el URL e intenta de nuevo.</p>
     </div>
 </body>
 </html>
+```
 
+### 2️⃣ `public/index.php`
 
-Agregar dentro  *public/index.php* el siguiente contenido:
-
+```php
 <?php
 
-require '../scr/routes.php'
+require '../src/routes.php';
 
 ?>
+```
 
-Agregar dentro de  scr/routes.php  el siguiente contenido:
+### 3️⃣ `src/routes.php`
 
-<?php 
+```php
+<?php
 
-//END POINT PRINCIPAL: http://localhost/libreria-api/public/index.php/holamundo
-// END POINT CON UN PARAMETRO: http://localhost/libreria-api/public/index.php/holamundo?nombre=Daniel
+// ENDPOINTS DISPONIBLES:
+// - http://localhost/libreria-api/public/index.php/holamundo
+// - http://localhost/libreria-api/public/index.php/holamundo?nombre=Messi
 
-
-
-/// AQUI EMPIEZA LA LOGICA DE LA API.
- 
- 
-
-// Manejo de la ruta.
 $method = $_SERVER['REQUEST_METHOD'];
-//var_dump($method ); //get
-// remueve / del inicio
-
-
-
-
-$path = trim($_SERVER['PATH_INFO'], characters: '/');
-
-
-// Divide la ruta por "/" para obtener el endpoint y el posible parámetro.
+$path = trim($_SERVER['PATH_INFO'], '/');
 $segments = explode('/', $path);
-
-//var_dump($_SERVER);
-
-
-// Captura la cadena de consulta completa después del "?" (por ejemplo: "id=123&nombre=juan")
 $queryString = $_SERVER['QUERY_STRING'];
-// Parseamos la cadena de consulta a un arreglo asociativo.
 parse_str($queryString, $queryParams);
-
-
-// Extraemos los parámetros de la consulta
 $nombre = isset($queryParams['nombre']) ? $queryParams['nombre'] : null;
 
-var_dump($nombre);
-
-if($path  == "holamundo") {
-
+if ($path == "holamundo") {
     switch ($method) {
         case 'GET':
-
-            if($nombre != "")
-            {
-                echo json_encode(['Alert' => 'Hola: '. $nombre]);
+            if ($nombre != "") {
+                echo json_encode(['Alert' => 'Hola: ' . $nombre]);
+            } else {
+                echo json_encode(['Alert' => 'Llamando GET sin parámetros']);
             }
-            else
-            {
-                echo json_encode(['Alert' => 'LLamando get sin parametros']);
-            }
-           
             break;
         default:
-            Response::json(['error' => 'Metodo no permitido'], 405);
+            Response::json(['error' => 'Método no permitido'], 405);
     }
-}
-else{
+} else {
     include "error/response.html";
 }
 
-
-
 ?>
+```
 
