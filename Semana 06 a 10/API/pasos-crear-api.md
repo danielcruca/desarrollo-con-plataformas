@@ -6,17 +6,19 @@ Este documento explica los pasos necesarios para crear una estructura básica de
 
 ## 📂 Estructura de carpetas
 
-1. Crear un folder llamado **libreria-api** en `C:\xampp\htdocs` (puede usar cualquier otro nombre).
-2. Dentro de **libreria-api**, crear la siguiente estructura de folders:
+1. Crear un folder llamado **libreria** en `C:\xampp\htdocs` (puede usar cualquier otro nombre).
+2. Dentro de **libreria**, crear la siguiente estructura de folders:
 
 ```
-C:.
-├───public
-│   └───error
-└───src
-    ├───controllers
-    ├───db
-    └───models
+C:\xampp\htdocs\libreria
+├───api
+│   ├───v1
+│   │   ├───public
+│   │   ├───index.php
+│   │   └───src
+│   │       ├───controllers
+│   │       ├───db
+│   │       └───models
 ```
 
 3. Dentro de **public**, crear:
@@ -88,8 +90,8 @@ require '../src/routes.php';
 <?php
 
 // ENDPOINTS DISPONIBLES:
-// - http://localhost/libreria-api/public/index.php/holamundo
-// - http://localhost/libreria-api/public/index.php/holamundo?nombre=Messi
+// - http://localhost/libreria/api/v1/index.php/holamundo
+// - http://localhost/libreria/api/v1/index.php/holamundo?nombre=Messi
 
 $method = $_SERVER['REQUEST_METHOD'];
 $path = trim($_SERVER['PATH_INFO'], '/');
