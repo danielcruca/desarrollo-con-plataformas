@@ -35,7 +35,7 @@ C:\xampp\htdocs\libreria
 
 ## 📄 Contenido de los Archivos
 
-### 1️⃣ `public/error/response.html`
+### 1️⃣ `libreria/api/v1/public/error/response.html`
 
 ```html
 <!DOCTYPE html>
@@ -84,23 +84,47 @@ require '../src/routes.php';
 ?>
 ```
 
-### 3️⃣ `src/routes.php`
+### 3️⃣ `libreria/api/v1/src/routes.php`
 
 ```php
 <?php
+// http://localhost/libreria/api/v1/public/index.php/holamundo
+// http://localhost/libreria/api/v1/public/index.php/holamundo?nombre=Messi
 
-// ENDPOINTS DISPONIBLES:
-// - http://localhost/libreria/api/v1/index.php/holamundo
-// - http://localhost/libreria/api/v1/index.php/holamundo?nombre=Messi
-
+// Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
-$path = trim($_SERVER['PATH_INFO'], '/');
-$segments = explode('/', $path);
-$queryString = $_SERVER['QUERY_STRING'];
-parse_str($queryString, $queryParams);
-$nombre = isset($queryParams['nombre']) ? $queryParams['nombre'] : null;
 
-if ($path == "holamundo") {
+// Obtener la ruta solicitada y quitar 'public' si es necesario
+$requestUri = trim(str_replace('/libreria/api/v1/public', '', $_SERVER['REQUEST_URI']), '/');
+// "index.php/holamundo"
+//var_dump($requestUri);
+
+
+// Separar la ruta en segmentos
+// Quitar los parámetros de la URL para que no interfieran con la ruta
+$requestUriWithoutQuery = strtok($requestUri, '?');
+$segments = explode('/', $requestUriWithoutQuery);
+//  { [0]=> string(9) "index.php" [1]=> string(9) "holamundo" }
+//var_dump($segments);
+
+
+// Obtener parámetros de la URL (si los hay)
+$queryString = $_SERVER['QUERY_STRING'] ?? '';
+//"nombre=Messi"
+//var_dump( $_SERVER['QUERY_STRING']);
+parse_str($queryString, $queryParams); // CONVIERTE LOS QUERY STRING EN UN ARRAY.
+$nombre = $queryParams['nombre'] ?? null;
+
+
+// Mostrar la ruta solicitada y el parámetro 'nombre' para depuración
+//print("Ruta solicitada sin parámetros: " . $requestUriWithoutQuery . "\n");
+//print("Segmentos de la ruta: ");
+//print_r($segments);
+//print("Valor del parámetro 'nombre': " . ($nombre ?? 'No proporcionado') . "\n");
+
+// Manejo de la ruta "holamundo"
+if (isset($segments[1]) && $segments[1] == "holamundo") {
+
     switch ($method) {
         case 'GET':
             if ($nombre != "") {
@@ -110,12 +134,17 @@ if ($path == "holamundo") {
             }
             break;
         default:
-            Response::json(['error' => 'Método no permitido'], 405);
+            // Método no permitido
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['error' => 'Método no permitido']);
+            break;
     }
 } else {
-    include "error/response.html";
+    // Si no se encuentra la ruta, devolver 404
+    http_response_code(404);
+    echo json_encode(['error' => 'Ruta no encontrada']);
+    exit();
 }
 
-?>
 ```
 
