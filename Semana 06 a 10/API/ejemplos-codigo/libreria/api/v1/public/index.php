@@ -1,5 +1,5 @@
 <?php
 
-    require '../src/routes.php'
+    require '../scr/routes.php';
 
 ?>
