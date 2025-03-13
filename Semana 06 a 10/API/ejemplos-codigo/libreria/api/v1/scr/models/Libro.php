@@ -45,7 +45,7 @@ class Libro {
     public function create($data) {
         $stmt = $this->db->prepare("INSERT INTO libros (titulo, id_autor, precio, cantidad_stock) VALUES (?, ?, ?, ?)");
         $stmt->execute([$data['titulo'], $data['id_autor'], $data['precio'], $data['cantidad_stock']]);
-        return ['id' => $this->db->lastInsertId()];
+        return ['el id nuevo es' => $this->db->lastInsertId()];
     }
 
 

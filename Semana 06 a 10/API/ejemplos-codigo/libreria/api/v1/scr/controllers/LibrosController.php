@@ -18,13 +18,21 @@ class LibrosController {
     }
 
 
-    public function get($id) {
+    public function obtenerLibro($id) {
 
      
-        echo json_encode($this->model->obtenerTodos());
+        echo json_encode($this->model->buscarPorID($id));
            
         // echo json_encode($this->model->all());
     }
+
+    public function crearLibro() {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+
+       // var_dump($data);
+        echo json_encode($this->model->crear($data));
     }
+}
         
 ?>
