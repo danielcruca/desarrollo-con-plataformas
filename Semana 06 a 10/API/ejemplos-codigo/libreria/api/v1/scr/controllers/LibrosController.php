@@ -26,12 +26,35 @@ class LibrosController {
         // echo json_encode($this->model->all());
     }
 
+    // leyendo los datos del body
+    // llamammos al modelo enviar los datos.
+    // devolvemos el resultado
     public function crearLibro() {
-        $data = json_decode(file_get_contents('php://input'), true);
+    $data = json_decode(file_get_contents(filename: 'php://input'), true);
+    $resultado = $this->model->crear($data);
+        echo json_encode($resultado);
+    }
 
 
-       // var_dump($data);
-        echo json_encode($this->model->crear($data));
+    public function actualizarLibro($id)
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $modeloLibro = new Libro(); 
+        $resultado = $modeloLibro->actualizar($id,$data);       
+        echo json_encode(value: ["Resultado" =>   $resultado]);
+    }
+
+    public function actualizar($id)
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $modeloLibro = new Libro();        
+        echo json_encode(value: ["Resultado" =>   $modeloLibro->update($id,$data)]);
+        
+    }
+
+    public function eliminarLibro($id) {
+        echo json_encode($this->model->eliminar($id));
     }
 }
         

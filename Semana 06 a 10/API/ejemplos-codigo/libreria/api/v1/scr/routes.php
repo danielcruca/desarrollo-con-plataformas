@@ -2,6 +2,12 @@
 // http://localhost/libreria/api/v1/public/index.php/libros
 // http://localhost/libreria/api/v1/public/index.php/holamundo?nombre=Messi
 require_once 'controllers/LibrosController.php';
+require_once "utils/Auth.php";
+
+// seguridad token
+//$auth = new Auth();
+//$auth->verificarToken();
+
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -46,6 +52,15 @@ if (isset($segments[1]) && $segments[1] == "libro") {
                 $libros = new  LibrosController();
                 $libros->crearLibro();
                // echo json_encode(value: ['Alert' => 'llamando al POST en libro']);
+                break;
+            case 'PUT':
+                $libros = new  LibrosController();
+                $libros->actualizarLibro($id);
+                break;
+
+            case 'DELETE':
+                $libros = new  LibrosController();
+                $libros->eliminarLibro(id: $id);
                 break;
         default:
             // Método no permitido
