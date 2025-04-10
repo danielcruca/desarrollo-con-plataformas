@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lista de Libros</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #e0f7fa;
+    }
+
+    #tabla-libros {
+      border: 1px solid #ddd;
+    }
+  </style>
+
+  
+</head>
+<body>
+  <h1>Libros disponibles</h1>
+  <table border="1" id="tabla-libros">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Autor</th>
+      </tr>
+    </thead>
+    <tbody>
+<!-- Contenido de la tabla con respuesta del endpoint-->
+
+    </tbody>
+  </table>
+
+  <script>
+    let tablaHTML = '';
+
+    function cargarLibros() {
+      fetch('http://localhost/libreria/api/v1/public/index.php/libros')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+          const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+          return JSON.parse(cleanText);
+        })
+        .then(data => {
+          const tbody = document.querySelector('#tabla-libros tbody');
+          tbody.innerHTML = ' ';
+
+          data.forEach(libro => {
+            const row = `
+              <tr>
+                <td>${libro.id_libro}</td>
+                <td>${libro.titulo}</td>
+                <td>${libro.precio}</td>
+                <td>${libro.cantidad_stock}</td>
+                <td>${libro.autor}</td>
+              </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML += row;
+          });
+
+
+        })
+        .catch(error => {
+          console.error("Error al cargar libros:", error);
+        });
+    }
+
+    window.onload = cargarLibros;
+  </script>
+</body>
+</html>
